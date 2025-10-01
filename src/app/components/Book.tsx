@@ -7,8 +7,8 @@ import { useState } from "react";
 
 interface Thumbnail {
   url: string;
-  width: number;
-  height: number;
+  width?: number;
+  height?: number;
 }
 
 interface BookProps {
@@ -26,7 +26,7 @@ const Book = ({ book, isPurchased }: BookProps) => {
   const router = useRouter();
   const [showModal, setShowModal] = useState(false);
   const { data: session } = useSession();
-  const user: any = session?.user;
+  const user = session?.user as { id?: string } | undefined;
 
   const startCheckout = async () => {
     try {
@@ -126,10 +126,10 @@ const Book = ({ book, isPurchased }: BookProps) => {
         }
       `}</style>
 
-      <div className="flex flex-col items-center m-4">
+      <div className="flex flex-col w-full">
         <a
           onClick={handlePurchaseClick}
-          className="cursor-pointer shadow-2xl duration-300 hover:translate-y-1 hover:shadow-none"
+          className="cursor-pointer shadow-2xl duration-300 hover:translate-y-1 hover:shadow-none rounded-lg overflow-hidden"
         >
           {renderThumbnail()}
 

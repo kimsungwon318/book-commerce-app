@@ -3,7 +3,7 @@ type BookType = {
   title: string;
   price: number;
   content: string;
-  thumbnail: { url: string };
+  thumbnail: { url: string; width?: number; height?: number }[];
   created_at: string;
   updated_at: string;
 };

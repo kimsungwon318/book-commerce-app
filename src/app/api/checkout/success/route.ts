@@ -4,7 +4,7 @@ import Stripe from "stripe";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
-export async function POST(request: Request, response: Response) {
+export async function POST(request: Request) {
   const { sessionId } = await request.json();
 
   try {
@@ -67,11 +67,12 @@ export async function POST(request: Request, response: Response) {
         message: "すでに購入済みです",
       });
     }
-  } catch (err: any) {
+  } catch (err) {
+    const errorMessage = err instanceof Error ? err.message : "Unknown error";
     return NextResponse.json(
       {
-        error: err.message,
-        details: err,
+        error: errorMessage,
+        details: err instanceof Error ? err.stack : String(err),
       },
       { status: 500 }
     );

@@ -10,15 +10,13 @@ export default async function Home() {
   const session = await getServerSession(nextAuthOptions);
   const user = session?.user as User;
 
-  let purchasesData: any[] = [];
+  let purchasesData: Purchase[] = [];
   let purchaseBookIds: string[] = [];
 
   if (user) {
     try {
       const response = await fetch(
-        `${
-          process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api"
-        }/purchases/${user.id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/purchases/${user.id}`,
         {
           cache: "no-store",
         }
@@ -29,7 +27,6 @@ export default async function Home() {
         purchaseBookIds = purchasesData.map(
           (purchaseBook: Purchase) => purchaseBook.bookId
         );
-        console.log("purchaseBookIds", purchaseBookIds);
       }
     } catch (error) {
       console.error("Error fetching purchases:", error);
@@ -38,17 +35,19 @@ export default async function Home() {
 
   return (
     <>
-      <main className="flex flex-wrap justify-center items-center md:mt-32 mt-20">
-        <h2 className="text-center w-full font-bold text-3xl mb-2">
+      <main className="md:mt-32 mt-20 px-4">
+        <h2 className="text-center w-full font-bold text-3xl mb-8">
           Book Commerce
         </h2>
-        {contents.map((book: BookType) => (
-          <Book
-            key={book.id}
-            book={book}
-            isPurchased={purchaseBookIds.includes(book.id)}
-          />
-        ))}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
+          {contents.map((book: BookType) => (
+            <Book
+              key={book.id}
+              book={book}
+              isPurchased={purchaseBookIds.includes(book.id)}
+            />
+          ))}
+        </div>
       </main>
     </>
   );

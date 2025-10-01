@@ -1,24 +1,10 @@
 "use client";
 
-import { getProviders, signIn } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { signIn } from "next-auth/react";
+import { useState } from "react";
 
 function Login() {
-  const [providers, setProviders] = useState<any>(null);
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    const fetchProviders = async () => {
-      try {
-        const res = await getProviders();
-
-        setProviders(res);
-      } catch (error) {
-        console.error("프로바이더 로드 실패:", error);
-      }
-    };
-    fetchProviders();
-  }, []);
 
   const handleGitHubLogin = async () => {
     setLoading(true);
